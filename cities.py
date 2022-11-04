@@ -79,11 +79,3 @@ class CityCollection:
 
     def plot_top_emitters(self, city: City, n: int, save: bool):
         raise NotImplementedError
-
-if __name__ == '__main__':
-    z = City("fs", "sdafa", 1, 1.0, 2)
-    b = City("dfdfdfd", "fsdffsd", 1, 1.0, 2)
-    # c = "fdsaf"
-    l = [z, b]
-    cc = CityCollection(l)
-    print(cc.cities == l)

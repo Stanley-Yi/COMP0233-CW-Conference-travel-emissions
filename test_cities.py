@@ -1,5 +1,11 @@
 import pytest
 from cities import City, CityCollection
+from utils import *
+from pathlib import Path
+
+# conda activate inter_pytorch
+# cd D:\Files\Learning Materials\Postgraduate\Semester 1\COMP0233\Coursework
+# pytest test_cities.py
 
 # Test City Constructor
 def test_valid_values_City_Constructor():
@@ -71,3 +77,15 @@ def test_invalid_Types_CityCollection_cities():
         Argentina = []
         city_list = [Algeria, Argentina]
         CityCollection(city_list)
+
+
+# Test read_attendees_file
+def test_read_attendees_file():
+    file = Path('attendee_locations.csv')
+    read_attendees_file(file)
+
+
+
+if __name__ == '__main__':
+    file = Path('attendee_locations.csv')
+    coll = read_attendees_file(file)
