@@ -36,8 +36,22 @@ class City:
     def co2_to(self, other: 'City') -> float:
         raise NotImplementedError
 
+
+
 class CityCollection:
-    ...
+    def __init__(self, cities: List[City]):
+        if cities == None or len(cities) == 0:
+            raise TypeError("Cities should not be empty or None")
+
+        if not type(cities) is list or not all(list(map(self.checkCity, cities))):
+            raise TypeError("Cities should be a list of City object")
+
+        self.cities = cities
+
+
+    def checkCity(self, l: list):
+        return isinstance(l, City)
+
 
     def countries(self) -> List[str]:
         raise NotImplementedError
@@ -68,3 +82,8 @@ class CityCollection:
 
 if __name__ == '__main__':
     z = City("fs", "sdafa", 1, 1.0, 2)
+    b = City("dfdfdfd", "fsdffsd", 1, 1.0, 2)
+    # c = "fdsaf"
+    l = [z, b]
+    cc = CityCollection(l)
+    print(cc.cities == l)
