@@ -1,2 +1,4 @@
 \.idea
 Coursework_2_Conference_travel_emissions.pdf
+\__pycache__
+\.pytest_cache

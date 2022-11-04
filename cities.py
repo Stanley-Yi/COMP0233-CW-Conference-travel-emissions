@@ -41,7 +41,7 @@ class City:
 class CityCollection:
     def __init__(self, cities: List[City]):
         if cities == None or len(cities) == 0:
-            raise TypeError("Cities should not be empty or None")
+            raise Exception("Cities should not be empty or None")
 
         if not type(cities) is list or not all(list(map(self.checkCity, cities))):
             raise TypeError("Cities should be a list of City object")
