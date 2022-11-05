@@ -1,5 +1,6 @@
 from typing import Dict, List, Tuple
 import math
+import matplotlib.pyplot as plt
 
 class City:
     def __init__(self, name: str, country: str, num: int, latitude: float, longitude: float):
@@ -176,5 +177,47 @@ class CityCollection:
         return sorted(result, key=lambda x : x[:][1])  # sort list by co2 emissions
 
 
-    def plot_top_emitters(self, city: City, n: int, save: bool):
-        raise NotImplementedError
+    def plot_top_emitters(self, city: City, n = 10, save = False):
+        # plot and save n-1 top top emitters and the sum of the others
+        if not type(city) is City:
+            raise TypeError("Argument city should be a City object")
+
+        if not type(n) is int:
+            raise TypeError("Argument n should be integer")
+
+        country_num = len(self.countries())
+        if not 0 <= n <= country_num + 1:
+            raise Exception("Range of argument n should be [0, total country + 1], total country is %d" %country_num)
+
+        if not type(save) is bool:
+            raise TypeError("Argument save should be boolean")
+
+        dic = self.co2_by_country(city)
+        top_list = sorted(dic.items(), key=lambda item: item[1], reverse=True)  # sort descending by co2
+
+        # plot
+        y = []
+        x = []
+        All_other_countries = 0.0
+        for i in range(len(top_list)):
+            if i < n - 1:
+                x.append(top_list[i][0])
+                y.append(float(top_list[i][1]) / 1000)  # transfer to tonnes
+            else:
+                All_other_countries += top_list[i][1]
+
+        y.append(All_other_countries / 1000)
+        x.append('All other\ncountries')
+
+        plt.title('Total emissions from each country (top %d)' %(n-1))
+        plt.ylabel('Total emissions (tonnes CO2)')
+        plt.xticks(rotation=60)
+        color = ['#1AE6E6', '#22DD48', '#EE1196', '#FFFF00', '#A93CC4']
+        plt.bar(x = x, width = 0.35, height = y, edgecolor = 'white', color = color, tick_label = x)
+
+        if save:  # save img
+            img_name = city.name.replace(" ", "_")
+            plt.savefig("./%s.png" %img_name, dpi=200, bbox_inches='tight')
+
+        plt.show()
+

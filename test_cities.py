@@ -240,11 +240,36 @@ def test_CityCollection_sorted_by_emissions():
     assert output == true_result
 
 
+# Test CityCollection.plot_top_emitters
+def test_CityCollection_plot_top_emitters():
+    file = Path('attendee_locations.csv')
+    city_collection = read_attendees_file(file)
+
+    city_collection.plot_top_emitters(Birmingham_Gardens, 12, True)
+
+def test_invalid_Types_plot_top_emitters():
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens, Sidney]
+    city_collection = CityCollection(l)
+
+    with pytest.raises(TypeError, match=r"Argument city should be a City object"):
+        wrong_city = [1, 2]
+        city_collection.plot_top_emitters(wrong_city, 8, True)
+
+    with pytest.raises(TypeError, match=r"Argument n should be integer"):
+        city_collection.plot_top_emitters(Birmingham_Gardens, '10', True)
+
+    with pytest.raises(Exception):
+        city_collection.plot_top_emitters(Birmingham_Gardens, 10, True)
+
+    with pytest.raises(TypeError, match=r"Argument save should be boolean"):
+        city_collection.plot_top_emitters(Birmingham_Gardens, 3, 'true')
+
+
 
 if __name__ == '__main__':
     l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens, Sidney]
     city_collection = CityCollection(l)
 
-    output = city_collection.sorted_by_emissions()
-    a = (1, 2)
-    print(output)
+    output = city_collection.plot_top_emitters(Birmingham_Gardens, 5, True)
+    # a = (1, 2)
+    # print(output)
