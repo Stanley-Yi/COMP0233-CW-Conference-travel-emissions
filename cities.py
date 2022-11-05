@@ -121,8 +121,22 @@ class CityCollection:
     def total_co2(self, city: City) -> float:
         raise NotImplementedError
 
+
     def co2_by_country(self, city: City) -> Dict[str, float]:
-        raise NotImplementedError
+        # find the total co2 emitted by attendees that from the same country to the host city
+        if not type(city) is City:
+            raise TypeError("Function co2_by_country should take a City object as argument")
+
+        dic = {}
+        for i in self.cities:
+            if not i.country in dic:  # put country into dict
+                dic[i.country] = 0.0
+
+            if i.name != city:
+                co2 = i.co2_to(city)  # co2 emitted from src city to tar city
+                dic[i.country] += co2
+        return dic
+
 
     def summary(self, city: City):
         raise NotImplementedError

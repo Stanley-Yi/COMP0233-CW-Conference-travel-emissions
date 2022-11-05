@@ -163,6 +163,27 @@ def test_invaild_travel_by_country():
         city_collection.travel_by_country(wrong_city)
 
 
+# Test CityCollection.co2_by_country
+def test_CityCollection_co2_by_country():
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    city_collection = CityCollection(l)
+
+    # calculate true value
+    true_dic = {'Algeria':0.0, 'Argentina':0.0, 'Australia':0.0}
+    for i in l:
+        true_dic[i.country] += i.co2_to(Sidney)
+
+    assert city_collection.co2_by_country(Sidney) == true_dic
+
+def test_invaild_co2_by_country():
+    with pytest.raises(Exception, match=r"Function co2_by_country should take a City object as argument"):
+        l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+        city_collection = CityCollection(l)
+        wrong_city = {}
+        city_collection.co2_by_country(wrong_city)
+
+
+
 
 if __name__ == '__main__':
     Algiers = City("Algiers", "Algeria", 1, 0.0, 0.0)
