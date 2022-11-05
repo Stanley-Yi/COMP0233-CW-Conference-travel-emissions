@@ -32,6 +32,7 @@ class City:
 
 
     def distance_to(self, other: 'City') -> float:
+        # calculate distance km between two cities
         if not type(other) is City:
             raise TypeError("Function distance_to should take a City object as argument")
 
@@ -42,6 +43,7 @@ class City:
 
 
     def co2_to(self, other: 'City') -> float:
+        # calculate co2 emitted by all attendees travel from src city to tar city
         if not type(other) is City:
             raise TypeError("Function co2_to should take a City object as argument")
 
@@ -89,6 +91,9 @@ class CityCollection:
 
     def total_distance_travel_to(self, city: City) -> float:
         # calculate total distance travelled by all attendees
+        if not type(city) is City:
+            raise TypeError("Function total_distance_travel_to should take a City object as argument")
+
         total_distance = 0.0
         for i in self.cities:
             if i.name != city:
@@ -98,7 +103,20 @@ class CityCollection:
 
 
     def travel_by_country(self, city: City) -> Dict[str, float]:
-        raise NotImplementedError
+        # find the total distance of attendees that from the same country to the host city
+        if not type(city) is City:
+            raise TypeError("Function travel_by_country should take a City object as argument")
+
+        dic = {}
+        for i in self.cities:
+            if not i.country in dic:  # put country into dict
+                dic[i.country] = 0.0
+
+            if i.name != city:
+                dis = city.distance_to(i) * i.num  # distance from src city to tar city
+                dic[i.country] += dis
+        return dic
+
 
     def total_co2(self, city: City) -> float:
         raise NotImplementedError

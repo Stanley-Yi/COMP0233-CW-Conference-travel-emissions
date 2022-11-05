@@ -7,6 +7,14 @@ from pathlib import Path
 # cd D:\Files\Learning Materials\Postgraduate\Semester 1\COMP0233\Coursework
 # pytest test_cities.py
 
+# test data
+Algiers = City("Algiers", "Algeria", 1, 28.0000272, 2.9999825)
+Buenos_Aires = City("Buenos Aires", "Argentina", 5, -34.6075616, -58.437076)
+Mendoza = City("Mendoza", "Argentina", 4, -34.78719615, -68.4380712382687)
+Birmingham_Gardens = City("Birmingham Gardens", "Australia", 1, -68.4380712382687, 151.69)
+Sidney = City("Sidney", "Canada", 6, 48.6505788, -123.3983246)
+
+
 # Test City Constructor
 def test_valid_values_City_Constructor():
     City("Algeria", "Algiers", 1, 28.0000272, 2.9999825)
@@ -52,9 +60,7 @@ def test_invalid_ranges_City_longitude():
 
 # Test CityCollection Constructor
 def test_valid_values_CityCollection_Constructor():
-    Algeria = City("Algeria", "Algiers", 1, 28.0000272, 2.9999825)
-    Argentina = City("Argentina", "Buenos Aires", 5, -34.6075616, -58.437076)
-    city_list = [Algeria, Argentina]
+    city_list = [Algiers, Buenos_Aires]
     cities = CityCollection(city_list)
     assert cities.cities == city_list
 
@@ -73,9 +79,8 @@ def test_invalid_Types_CityCollection_cities():
         CityCollection(city_list)
 
     with pytest.raises(TypeError, match=r"Cities should be a list of City object"):
-        Algeria = City("Algeria", "Algiers", 1, 28.0000272, 2.9999825)
-        Argentina = []
-        city_list = [Algeria, Argentina]
+        wrong_city = []
+        city_list = [Algiers, wrong_city]
         CityCollection(city_list)
 
 
@@ -87,62 +92,39 @@ def test_read_attendees_file():
 
 # Test city.distance_to
 def test_City_distance_to():
-    Algeria = City("Algeria", "Algiers", 1, 0.0, 0.0)
-    Argentina = City("Argentina", "Buenos Aires", 5, 10.0, 10.0)
-    distance = Algeria.distance_to(Argentina)
-    assert round(distance, 1) == 1568.5  # https://www.omnicalculator.com/other/latitude-longitude-distance
+    distance = Algiers.distance_to(Buenos_Aires)
+    assert int(distance) == 9492  # https://www.omnicalculator.com/other/latitude-longitude-distance
 
 def test_invaild_distance_to():
     with pytest.raises(Exception, match=r"Function distance_to should take a City object as argument"):
-        Algeria = City("Algeria", "Algiers", 1, 0.0, 0.0)
-        Argentina = [City("Argentina", "Buenos Aires", 5, 10.0, 10.0)]
-        Algeria.distance_to(Argentina)
+        Algiers.distance_to([Buenos_Aires])
 
 
 # Test city.co2_to
 def test_City_co2_to():
-    Algeria = City("Algeria", "Algiers", 1, 0.0, 0.0)
-    Argentina = City("Argentina", "Buenos Aires", 5, 10.0, 10.0)
-    co2 = Algeria.co2_to(Argentina)
-    assert co2 == Algeria.distance_to(Argentina) * 250 * 1
+    co2 = Algiers.co2_to(Buenos_Aires)
+    assert co2 == Algiers.distance_to(Buenos_Aires) * 300 * Algiers.num
 
 def test_invaild_co2_to():
     with pytest.raises(Exception, match=r"Function co2_to should take a City object as argument"):
-        Algeria = City("Algeria", "Algiers", 1, 0.0, 0.0)
-        Argentina = "City"
-        Algeria.co2_to(Argentina)
+        wrong_city = "City"
+        Algiers.co2_to(wrong_city)
 
 
 # Test CityCollection.countries
 def test_CityCollection_countries():
-    Algiers = City("Algiers", "Algeria", 1, 0.0, 0.0)
-    Buenos_Aires = City("Buenos Aires", "Argentina", 5, 10.0, 10.0)
-    Mendoza = City("Mendoza", "Argentina", 4, 10.0, 10.0)
-    Birmingham_Gardens = City("Birmingham Gardens", "Australia", 1, 10.0, 10.0)
-
     city_collection = CityCollection([Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens])
     assert set(city_collection.countries()) == {'Algeria', 'Australia', 'Argentina'}
 
 
 # Test CityCollection.total_attendees
 def test_CityCollection_total_attendees():
-    Algiers = City("Algiers", "Algeria", 1, 0.0, 0.0)
-    Buenos_Aires = City("Buenos Aires", "Argentina", 5, 10.0, 10.0)
-    Mendoza = City("Mendoza", "Argentina", 4, 10.0, 10.0)
-    Birmingham_Gardens = City("Birmingham Gardens", "Australia", 1, 10.0, 10.0)
-
     city_collection = CityCollection([Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens])
     assert city_collection.total_attendees() == 11
 
 
 # Test CityCollection.total_distance_travel_to
 def test_CityCollection_total_distance_travel_to():
-    Algiers = City("Algiers", "Algeria", 1, 28.0000272, 2.9999825)
-    Buenos_Aires = City("Buenos Aires", "Argentina", 5, -34.6075616, -58.437076)
-    Mendoza = City("Mendoza", "Argentina", 4, -34.78719615, -68.4380712382687)
-    Birmingham_Gardens = City("Birmingham Gardens", "Australia", 1, -68.4380712382687, 151.69)
-    Sidney = City("Sidney", "Canada", 6, 48.6505788, -123.3983246)
-
     l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
     city_collection = CityCollection(l)
 
@@ -153,6 +135,33 @@ def test_CityCollection_total_distance_travel_to():
 
     assert city_collection.total_distance_travel_to(Sidney) == true_dis
 
+def test_invaild_total_distance_travel_to():
+    with pytest.raises(Exception, match=r"Function total_distance_travel_to should take a City object as argument"):
+        l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+        city_collection = CityCollection(l)
+        wrong_city = "City"
+        city_collection.total_distance_travel_to(wrong_city)
+
+
+# Test CityCollection.travel_by_country
+def test_CityCollection_travel_by_country():
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    city_collection = CityCollection(l)
+
+    # calculate true value
+    true_dic = {'Algeria':0.0, 'Argentina':0.0, 'Australia':0.0}
+    for i in l:
+        true_dic[i.country] += i.distance_to(Sidney) * i.num
+
+    assert city_collection.travel_by_country(Sidney) == true_dic
+
+def test_invaild_travel_by_country():
+    with pytest.raises(Exception, match=r"Function travel_by_country should take a City object as argument"):
+        l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+        city_collection = CityCollection(l)
+        wrong_city = "City"
+        city_collection.travel_by_country(wrong_city)
+
 
 
 if __name__ == '__main__':
@@ -162,5 +171,6 @@ if __name__ == '__main__':
     Birmingham_Gardens = City("Birmingham Gardens", "Australia", 1, 10.0, 10.0)
 
     city_collection = CityCollection([Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens])
-    print(set(city_collection.countries()) == {'Algeria', 'Australia', 'Argentina'})
+    print(2847614.611004682 == ((9492.048703348939 * 300) * 1))
+    print((9492.048703348939 * 250) * 1)
     # assert set(city_collection.countries()) == ('Algeria', 'Australia', 'Argentina')
