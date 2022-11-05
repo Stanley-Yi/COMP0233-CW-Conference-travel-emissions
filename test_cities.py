@@ -245,7 +245,7 @@ def test_CityCollection_plot_top_emitters():
     file = Path('attendee_locations.csv')
     city_collection = read_attendees_file(file)
 
-    city_collection.plot_top_emitters(Birmingham_Gardens, 12, True)
+    city_collection.plot_top_emitters(Birmingham_Gardens, 8, True)
 
 def test_invalid_Types_plot_top_emitters():
     l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens, Sidney]
@@ -263,6 +263,7 @@ def test_invalid_Types_plot_top_emitters():
 
     with pytest.raises(TypeError, match=r"Argument save should be boolean"):
         city_collection.plot_top_emitters(Birmingham_Gardens, 3, 'true')
+
 
 
 
