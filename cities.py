@@ -35,6 +35,7 @@ class City:
         if not type(other) is City:
             raise TypeError("Function distance_to should take a City object as argument")
 
+        # transfer degree to radian
         lon1, lat1, lon2, lat2 = map(math.radians, [self.longitude, self.latitude, other.longitude, other.latitude])
 
         return 2.0 * 6371.0 * math.asin(math.sqrt((math.sin((lat2 - lat1) / 2) ** 2) + math.cos(lat1) * math.cos(lat2) * (math.sin((lon2 - lon1) / 2)** 2)))
@@ -50,7 +51,7 @@ class City:
             return distance * self.num * 200.0
         elif 1000 < distance <= 8000:
             return distance * self.num * 250.0
-        else:
+        else:  # > 8000
             return distance * self.num * 300.0
 
 
@@ -66,17 +67,20 @@ class CityCollection:
 
 
     def checkCity(self, l: list):
+        # check if all element in a list belongs to City class
         return isinstance(l, City)
 
 
     def countries(self) -> List[str]:
+        # find number of country
         country = []
         for i in self.cities:
             country.append(i.country)
-        return list(set(country))
+        return list(set(country))  # find unique country by set
 
 
     def total_attendees(self) -> int:
+        # calculate total attendees
         total_num = 0
         for i in self.cities:
             total_num += i.num
@@ -84,7 +88,14 @@ class CityCollection:
 
 
     def total_distance_travel_to(self, city: City) -> float:
-        raise NotImplementedError
+        # calculate total distance travelled by all attendees
+        total_distance = 0.0
+        for i in self.cities:
+            if i.name != city:
+                dis = city.distance_to(i)  # distance to host city
+                total_distance += dis * i.num
+        return total_distance
+
 
     def travel_by_country(self, city: City) -> Dict[str, float]:
         raise NotImplementedError

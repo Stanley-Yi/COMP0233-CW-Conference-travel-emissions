@@ -135,6 +135,25 @@ def test_CityCollection_total_attendees():
     assert city_collection.total_attendees() == 11
 
 
+# Test CityCollection.total_distance_travel_to
+def test_CityCollection_total_distance_travel_to():
+    Algiers = City("Algiers", "Algeria", 1, 28.0000272, 2.9999825)
+    Buenos_Aires = City("Buenos Aires", "Argentina", 5, -34.6075616, -58.437076)
+    Mendoza = City("Mendoza", "Argentina", 4, -34.78719615, -68.4380712382687)
+    Birmingham_Gardens = City("Birmingham Gardens", "Australia", 1, -68.4380712382687, 151.69)
+    Sidney = City("Sidney", "Canada", 6, 48.6505788, -123.3983246)
+
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    city_collection = CityCollection(l)
+
+    # calculate true value
+    true_dis = 0.0
+    for i in l:
+        true_dis += i.distance_to(Sidney) * i.num
+
+    assert city_collection.total_distance_travel_to(Sidney) == true_dis
+
+
 
 if __name__ == '__main__':
     Algiers = City("Algiers", "Algeria", 1, 0.0, 0.0)
