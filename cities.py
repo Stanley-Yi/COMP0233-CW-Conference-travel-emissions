@@ -70,10 +70,18 @@ class CityCollection:
 
 
     def countries(self) -> List[str]:
-        raise NotImplementedError
+        country = []
+        for i in self.cities:
+            country.append(i.country)
+        return list(set(country))
+
 
     def total_attendees(self) -> int:
-        raise NotImplementedError
+        total_num = 0
+        for i in self.cities:
+            total_num += i.num
+        return total_num
+
 
     def total_distance_travel_to(self, city: City) -> float:
         raise NotImplementedError

@@ -113,11 +113,35 @@ def test_invaild_co2_to():
         Algeria.co2_to(Argentina)
 
 
+# Test CityCollection.countries
+def test_CityCollection_countries():
+    Algiers = City("Algiers", "Algeria", 1, 0.0, 0.0)
+    Buenos_Aires = City("Buenos Aires", "Argentina", 5, 10.0, 10.0)
+    Mendoza = City("Mendoza", "Argentina", 4, 10.0, 10.0)
+    Birmingham_Gardens = City("Birmingham Gardens", "Australia", 1, 10.0, 10.0)
+
+    city_collection = CityCollection([Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens])
+    assert set(city_collection.countries()) == {'Algeria', 'Australia', 'Argentina'}
+
+
+# Test CityCollection.total_attendees
+def test_CityCollection_total_attendees():
+    Algiers = City("Algiers", "Algeria", 1, 0.0, 0.0)
+    Buenos_Aires = City("Buenos Aires", "Argentina", 5, 10.0, 10.0)
+    Mendoza = City("Mendoza", "Argentina", 4, 10.0, 10.0)
+    Birmingham_Gardens = City("Birmingham Gardens", "Australia", 1, 10.0, 10.0)
+
+    city_collection = CityCollection([Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens])
+    assert city_collection.total_attendees() == 11
+
+
 
 if __name__ == '__main__':
-    Algeria = City("Algeria", "Algiers", 1, 0.0, 0.0)
-    Argentina = City("Argentina", "Buenos Aires", 5, 10.0, 10.0)
-    co2 = Algeria.co2_to(Argentina)
-    print(co2)
-    print(Algeria.distance_to(Argentina) * 250 * 1)
-    # round(co2, 1) == Algeria.distance_to(Argentina) * 250 * 1
+    Algiers = City("Algiers", "Algeria", 1, 0.0, 0.0)
+    Buenos_Aires = City("Buenos Aires", "Argentina", 5, 10.0, 10.0)
+    Mendoza = City("Mendoza", "Argentina", 4, 10.0, 10.0)
+    Birmingham_Gardens = City("Birmingham Gardens", "Australia", 1, 10.0, 10.0)
+
+    city_collection = CityCollection([Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens])
+    print(set(city_collection.countries()) == {'Algeria', 'Australia', 'Argentina'})
+    # assert set(city_collection.countries()) == ('Algeria', 'Australia', 'Argentina')
