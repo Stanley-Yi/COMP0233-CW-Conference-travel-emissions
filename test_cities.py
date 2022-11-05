@@ -3,7 +3,7 @@ from cities import City, CityCollection
 from utils import *
 from pathlib import Path
 
-# conda activate inter_pytorch
+# conda activate intern_pytorch
 # cd D:\Files\Learning Materials\Postgraduate\Semester 1\COMP0233\Coursework
 # pytest test_cities.py
 
@@ -85,7 +85,39 @@ def test_read_attendees_file():
     read_attendees_file(file)
 
 
+# Test city.distance_to
+def test_City_distance_to():
+    Algeria = City("Algeria", "Algiers", 1, 0.0, 0.0)
+    Argentina = City("Argentina", "Buenos Aires", 5, 10.0, 10.0)
+    distance = Algeria.distance_to(Argentina)
+    assert round(distance, 1) == 1568.5  # https://www.omnicalculator.com/other/latitude-longitude-distance
+
+def test_invaild_distance_to():
+    with pytest.raises(Exception, match=r"Function distance_to should take a City object as argument"):
+        Algeria = City("Algeria", "Algiers", 1, 0.0, 0.0)
+        Argentina = [City("Argentina", "Buenos Aires", 5, 10.0, 10.0)]
+        Algeria.distance_to(Argentina)
+
+
+# Test city.co2_to
+def test_City_co2_to():
+    Algeria = City("Algeria", "Algiers", 1, 0.0, 0.0)
+    Argentina = City("Argentina", "Buenos Aires", 5, 10.0, 10.0)
+    co2 = Algeria.co2_to(Argentina)
+    assert co2 == Algeria.distance_to(Argentina) * 250 * 1
+
+def test_invaild_co2_to():
+    with pytest.raises(Exception, match=r"Function co2_to should take a City object as argument"):
+        Algeria = City("Algeria", "Algiers", 1, 0.0, 0.0)
+        Argentina = "City"
+        Algeria.co2_to(Argentina)
+
+
 
 if __name__ == '__main__':
-    file = Path('attendee_locations.csv')
-    coll = read_attendees_file(file)
+    Algeria = City("Algeria", "Algiers", 1, 0.0, 0.0)
+    Argentina = City("Argentina", "Buenos Aires", 5, 10.0, 10.0)
+    co2 = Algeria.co2_to(Argentina)
+    print(co2)
+    print(Algeria.distance_to(Argentina) * 250 * 1)
+    # round(co2, 1) == Algeria.distance_to(Argentina) * 250 * 1

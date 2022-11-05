@@ -1,4 +1,5 @@
 from typing import Dict, List, Tuple
+import math
 
 class City:
     def __init__(self, name: str, country: str, num: int, latitude: float, longitude: float):
@@ -31,11 +32,26 @@ class City:
 
 
     def distance_to(self, other: 'City') -> float:
-        raise NotImplementedError
+        if not type(other) is City:
+            raise TypeError("Function distance_to should take a City object as argument")
+
+        lon1, lat1, lon2, lat2 = map(math.radians, [self.longitude, self.latitude, other.longitude, other.latitude])
+
+        return 2.0 * 6371.0 * math.asin(math.sqrt((math.sin((lat2 - lat1) / 2) ** 2) + math.cos(lat1) * math.cos(lat2) * (math.sin((lon2 - lon1) / 2)** 2)))
+
 
     def co2_to(self, other: 'City') -> float:
-        raise NotImplementedError
+        if not type(other) is City:
+            raise TypeError("Function co2_to should take a City object as argument")
 
+        distance = self.distance_to(other)
+
+        if distance <= 1000:
+            return distance * self.num * 200.0
+        elif 1000 < distance <= 8000:
+            return distance * self.num * 250.0
+        else:
+            return distance * self.num * 300.0
 
 
 class CityCollection:
