@@ -149,7 +149,23 @@ class CityCollection:
 
 
     def summary(self, city: City):
-        raise NotImplementedError
+        # print Host city, total co2, and other relevant info
+        if not type(city) is City:
+            raise TypeError("Function summary should take a City object as argument")
+
+        city_list = []
+        for i in self.cities:
+            if i != city:
+                city_list.append(i.name)
+
+        total_co2 = self.total_co2(city)
+        total_att = self.total_attendees()
+        total_city = len(set(city_list))
+
+        print("Host city: %s (%s)" %(city.name, city.country))
+        print("Total CO2: %d tonnes" %(round(total_co2 / 1000)))
+        print("Total attendees travelling to %s from %d different cities: %d" %(city.name, total_city, total_att))
+
 
     def sorted_by_emissions(self) -> List[Tuple[str, float]]:
         raise NotImplementedError

@@ -193,7 +193,7 @@ def test_CityCollection_total_co2():
     for i in l:
         true_value += i.co2_to(Sidney)
 
-    assert round(city_collection.total_co2(Sidney), 5) == round(true_value, 5)
+    assert round(city_collection.total_co2(Sidney), 6) == round(true_value, 6)
 
 def test_invaild_total_co2():
     with pytest.raises(Exception, match=r"Function total_co2 should take a City object as argument"):
@@ -203,14 +203,29 @@ def test_invaild_total_co2():
         city_collection.total_co2(wrong_city)
 
 
+# Test CityCollection.summary
+def test_CityCollection_summary(capsys):
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    city_collection = CityCollection(l)
+
+    city_collection.summary(Sidney)
+    out, err = capsys.readouterr()
+
+    true_output = "Host city: Sidney (Canada)\nTotal CO2: 37216 tonnes\nTotal attendees travelling to Sidney from 4 different cities: 11\n"
+
+    assert out == true_output
+
+def test_invaild_summary():
+    with pytest.raises(Exception, match=r"Function summary should take a City object as argument"):
+        l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+        city_collection = CityCollection(l)
+        wrong_city = [1, 2]
+        city_collection.summary(wrong_city)
+
+
 
 if __name__ == '__main__':
-    Algiers = City("Algiers", "Algeria", 1, 0.0, 0.0)
-    Buenos_Aires = City("Buenos Aires", "Argentina", 5, 10.0, 10.0)
-    Mendoza = City("Mendoza", "Argentina", 4, 10.0, 10.0)
-    Birmingham_Gardens = City("Birmingham Gardens", "Australia", 1, 10.0, 10.0)
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    city_collection = CityCollection(l)
 
-    city_collection = CityCollection([Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens])
-    print(2847614.611004682 == ((9492.048703348939 * 300) * 1))
-    print((9492.048703348939 * 250) * 1)
-    # assert set(city_collection.countries()) == ('Algeria', 'Australia', 'Argentina')
+    city_collection.summary(Sidney)
