@@ -159,7 +159,7 @@ class CityCollection:
                 city_list.append(i.name)
 
         total_co2 = self.total_co2(city)
-        total_att = self.total_attendees()
+        total_att = self.total_attendees() - city.num
         total_city = len(set(city_list))
 
         print("Host city: %s (%s)" %(city.name, city.country))
@@ -168,7 +168,13 @@ class CityCollection:
 
 
     def sorted_by_emissions(self) -> List[Tuple[str, float]]:
-        raise NotImplementedError
+        # sort the list of host city names and its total CO2 emissions
+        result = []
+        for i in self.cities:
+            result.append((i.name, self.total_co2(i)))
+
+        return sorted(result, key=lambda x : x[:][1])  # sort list by co2 emissions
+
 
     def plot_top_emitters(self, city: City, n: int, save: bool):
         raise NotImplementedError

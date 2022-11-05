@@ -125,7 +125,7 @@ def test_CityCollection_total_attendees():
 
 # Test CityCollection.total_distance_travel_to
 def test_CityCollection_total_distance_travel_to():
-    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens, Sidney]
     city_collection = CityCollection(l)
 
     # calculate true value
@@ -145,11 +145,11 @@ def test_invaild_total_distance_travel_to():
 
 # Test CityCollection.travel_by_country
 def test_CityCollection_travel_by_country():
-    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens, Sidney]
     city_collection = CityCollection(l)
 
     # calculate true value
-    true_dic = {'Algeria':0.0, 'Argentina':0.0, 'Australia':0.0}
+    true_dic = {'Algeria':0.0, 'Argentina':0.0, 'Australia':0.0, 'Canada':0.0}
     for i in l:
         true_dic[i.country] += i.distance_to(Sidney) * i.num
 
@@ -165,11 +165,11 @@ def test_invaild_travel_by_country():
 
 # Test CityCollection.co2_by_country
 def test_CityCollection_co2_by_country():
-    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens, Sidney]
     city_collection = CityCollection(l)
 
     # calculate true value
-    true_dic = {'Algeria':0.0, 'Argentina':0.0, 'Australia':0.0}
+    true_dic = {'Algeria':0.0, 'Argentina':0.0, 'Australia':0.0, 'Canada':0.0}
     for i in l:
         true_dic[i.country] += i.co2_to(Sidney)
 
@@ -185,7 +185,7 @@ def test_invaild_co2_by_country():
 
 # Test CityCollection.total_co2
 def test_CityCollection_total_co2():
-    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens, Sidney]
     city_collection = CityCollection(l)
 
     # calculate true value
@@ -205,7 +205,7 @@ def test_invaild_total_co2():
 
 # Test CityCollection.summary
 def test_CityCollection_summary(capsys):
-    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens, Sidney]
     city_collection = CityCollection(l)
 
     city_collection.summary(Sidney)
@@ -223,9 +223,28 @@ def test_invaild_summary():
         city_collection.summary(wrong_city)
 
 
-
-if __name__ == '__main__':
-    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+# Test CityCollection.sorted_by_emissions
+def test_CityCollection_sorted_by_emissions():
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens, Sidney]
     city_collection = CityCollection(l)
 
-    city_collection.summary(Sidney)
+    output = city_collection.sorted_by_emissions()
+
+    # calculate true value
+    true_result = []
+    for i in l:
+        true_result.append((i.name, city_collection.total_co2(i)))
+
+    true_result = sorted(true_result, key=lambda x: x[:][1])
+
+    assert output == true_result
+
+
+
+if __name__ == '__main__':
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens, Sidney]
+    city_collection = CityCollection(l)
+
+    output = city_collection.sorted_by_emissions()
+    a = (1, 2)
+    print(output)
