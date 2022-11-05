@@ -183,6 +183,25 @@ def test_invaild_co2_by_country():
         city_collection.co2_by_country(wrong_city)
 
 
+# Test CityCollection.total_co2
+def test_CityCollection_total_co2():
+    l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+    city_collection = CityCollection(l)
+
+    # calculate true value
+    true_value = 0.0
+    for i in l:
+        true_value += i.co2_to(Sidney)
+
+    assert round(city_collection.total_co2(Sidney), 5) == round(true_value, 5)
+
+def test_invaild_total_co2():
+    with pytest.raises(Exception, match=r"Function total_co2 should take a City object as argument"):
+        l = [Algiers, Buenos_Aires, Mendoza, Birmingham_Gardens]
+        city_collection = CityCollection(l)
+        wrong_city = (1, 2)
+        city_collection.total_co2(wrong_city)
+
 
 
 if __name__ == '__main__':

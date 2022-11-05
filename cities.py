@@ -119,7 +119,17 @@ class CityCollection:
 
 
     def total_co2(self, city: City) -> float:
-        raise NotImplementedError
+        # calculate total co2 emitted by all attendees
+        if not type(city) is City:
+            raise TypeError("Function total_co2 should take a City object as argument")
+
+        total_co2 = 0.0
+        dic = self.co2_by_country(city)  # get co2 emitted by attendees from each country
+
+        for v in dic.values():
+            total_co2 += v
+
+        return total_co2
 
 
     def co2_by_country(self, city: City) -> Dict[str, float]:
