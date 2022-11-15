@@ -4,7 +4,7 @@ from utils import *
 from pathlib import Path
 
 # conda activate intern_pytorch
-# cd D:\Files\Learning Materials\Postgraduate\Semester 1\COMP0233\Coursework
+# cd D:\Files\Learning Materials\Postgraduate\Semester 1\COMP0233\22043131\conference
 # pytest test_cities.py
 
 # test data

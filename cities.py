@@ -216,7 +216,7 @@ class CityCollection:
         plt.bar(x = x, width = 0.35, height = y, edgecolor = 'white', color = color, tick_label = x)
 
         if save:  # save img
-            img_name = city.name.replace(" ", "_")
+            img_name = city.name.replace(" ", "_").lower()
             plt.savefig("./%s.png" %img_name, dpi=200, bbox_inches='tight')
 
         plt.show()
